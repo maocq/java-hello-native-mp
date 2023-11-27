@@ -1,1 +1,4 @@
 rootProject.name = 'hellonative'
+
+include ':app-service'
+project(':app-service').projectDir = file('./applications/app-service')
