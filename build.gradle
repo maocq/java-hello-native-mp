@@ -1,12 +1,10 @@
-plugins {
-	//id 'java'
-	//id 'org.springframework.boot' version '3.2.0'
-	//id 'io.spring.dependency-management' version '1.1.4'
-	//id 'org.graalvm.buildtools.native' version '0.9.28'
-}
-
 
 allprojects {
+    apply plugin: 'java'
+    apply plugin: 'jacoco'
+
+    sourceCompatibility = JavaVersion.VERSION_21
+
     repositories {
         mavenCentral()
     }
@@ -14,12 +12,6 @@ allprojects {
 
 
 subprojects {
-    apply plugin: 'java'
-    //apply plugin: 'jacoco'
-    //apply plugin: 'io.spring.dependency-management'
-
-	sourceCompatibility = JavaVersion.VERSION_21
-
     test {
         useJUnitPlatform()
     }
@@ -32,5 +24,32 @@ subprojects {
 
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
         implementation platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
+    }
+
+    jacocoTestReport {
+        dependsOn test
+        reports {
+            xml.required = false
+            csv.required = false
+            html.outputLocation = layout.buildDirectory.dir('jacocoHtml')
+        }
+    }
+}
+
+jacoco {
+    toolVersion = "${jacocoVersion}"
+    reportsDirectory = layout.buildDirectory.dir('reports')
+}
+
+tasks.register('jacocoMergedReport', JacocoReport) {
+    dependsOn = subprojects.jacocoTestReport
+    additionalSourceDirs.setFrom files(subprojects.sourceSets.main.allSource.srcDirs)
+    sourceDirectories.setFrom files(subprojects.sourceSets.main.allSource.srcDirs)
+    classDirectories.setFrom files(subprojects.sourceSets.main.output)
+    executionData.setFrom project.fileTree(dir: '.', include: '**/build/jacoco/test.exec')
+    reports {
+        xml.setRequired true
+        csv.setRequired false
+        html.setRequired true
     }
 }
