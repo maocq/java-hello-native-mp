@@ -8,10 +8,3 @@ dependencies {
 
 	implementation 'org.springframework.boot:spring-boot-starter'
 }
-
-/*
-jar {
-	enabled = false // To disable the *-plain.jar
-}
- */
-
