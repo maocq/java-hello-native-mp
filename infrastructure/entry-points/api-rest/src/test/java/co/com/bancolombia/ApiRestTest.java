@@ -1,18 +1,18 @@
 package co.com.bancolombia;
 
 import co.com.bancolombia.model.customer.Customer;
+import co.com.bancolombia.usecase.CreateCustomerUseCase;
 import org.junit.jupiter.api.Test;
 
-import java.util.Collection;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class ApiRestTest {
 
     @Test
     void name() {
-        ApiRest apiRest = new ApiRest();
-        Collection<Customer> customers = apiRest.customers();
+        CreateCustomerUseCase createCustomerUseCase = new CreateCustomerUseCase(name -> "Hello");
+        ApiRest apiRest = new ApiRest(createCustomerUseCase, name -> "Hello");
+        Customer customers = apiRest.customers();
         assertNotNull(customers);
     }
 }

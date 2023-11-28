@@ -2,23 +2,22 @@ package co.com.bancolombia;
 
 import co.com.bancolombia.model.customer.Customer;
 import co.com.bancolombia.model.customer.gateways.CustomerRepository;
+import co.com.bancolombia.usecase.CreateCustomerUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Collection;
-import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
 public class ApiRest {
 
+    private final CreateCustomerUseCase createCustomerUseCase;
     private final CustomerRepository customerRepository;
 
-    @GetMapping("/customers")
-    Collection<Customer> customers() {
+    @GetMapping("/customer")
+    Customer customers() {
         System.out.println(Thread.currentThread().getName());
-        return Set.of(new Customer(1, "A"), new Customer(2, "B"), new Customer(3, "C"));
+        return createCustomerUseCase.create("Foo");
     }
 
     @GetMapping("/info")
