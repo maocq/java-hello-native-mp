@@ -1,5 +1,5 @@
 ## Build
-FROM ghcr.io/graalvm/graalvm-community:21 AS build
+FROM public.ecr.aws/e0v3l5t6/general-repo:graalvmmaocq-nic-certificates-21 AS build
 WORKDIR /app
 COPY . .
 RUN ./gradlew nativeCompile
